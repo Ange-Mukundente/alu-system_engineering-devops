@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# Fixes the issue with the server
-useradd -m -s /bin/bash nginx
-sed -i 's/user\s*=\s*www-data/user = nginx/' /etc/nginx/nginx.conf
-service nginx restart
-ps aux | grep '[n]ginx'
-nc -z 0 8080
-ps aux | grep '[n]ginx' | grep -q nginx
+# changes the user running nginx from superuser(root) to nginx
+sudo sed -i "s/\([ :]\)80 /\18080 /" /etc/nginx/sites-enabled/default
+sudo pkill apache2
+sudo chown -R nginx:nginx /etc/nginx/
+sudo chmod u+rw /etc/nginx/nginx.conf
+sudo -u nginx service nginx restart
